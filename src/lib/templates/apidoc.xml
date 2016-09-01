@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+    <title><?= $api_info["name"] ?></title>
+    <external><?= $ext_url . $api_info["fn_name"] ?></external>
+    <group><?= explode(":", $api_info["section"])[0] ?></group>
+    <template><![CDATA[
+        /**
+        * Implements <?= $api_info["fn_name"] ?>();
+        */
+        function ${file_name}_<?= substr($api_info["fn_signature"], strpos($api_info["fn_signature"], "_") + 1) ?>
+        {
+           ${cursor}
+        }
+        ]]>
+    </template>
+    <help><![CDATA[
+        <h2><?= $api_info["fn_signature_esc"] ?></h2>
+        <p><?= $api_info["doc_short"] ?></p>
+        <?php if ($api_info["doc_long"]) { ?>
+        <p><?= $api_info["doc_long"] ?></p>
+        <?php } ?>
+        <?php if ($api_info["doc_param"]) { ?>
+        <h3>Parameters</h3>
+        <dl>
+            <?php foreach($api_info["doc_param"] as $param) { ?>
+            <dt><b><?= trim($param["type"] . " " . $param["name"]) ?></b></dt>
+            <dd><?= $param["comment"] ?></dd>
+            <?php } ?>
+        </dl>
+        <?php } ?>
+        ]]>
+    </help>
+</item>

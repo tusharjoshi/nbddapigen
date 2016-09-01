@@ -1,0 +1,11 @@
+#!/usr/bin/env /usr/bin/php
+<?php
+
+$path = realpath(dirname(__FILE__) . "/../lib/nbddapigen");
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+//ini_set("include_path", get_include_path() . PATH_SEPARATOR . $path);
+
+require("cli.inc");
+
+nbddapigen_cli();
+

@@ -1,0 +1,3 @@
+[submodule "external/grammar_parser"]
+	path = external/grammar_parser
+	url = http://git.drupal.org/project/grammar_parser.git

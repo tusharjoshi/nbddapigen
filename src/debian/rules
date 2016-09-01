@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+# vim: noexpandtab:ts=4:sw=4
+
+%:
+	echo $(CURDIR)
+	dh $@
+
+override_dh_auto_install:
+	cp -a $(CURDIR)/src $(CURDIR)/debian/tmp
+	dh_auto_install --destdir=$(CURDIR)/debian/tmp
+

@@ -1,0 +1,13 @@
+Source: nbddapigen
+Section: Development 
+Priority: optional
+Homepage: https://github.com/coldrye-php/nbddapigen
+Maintainer: Carsten Klein <trancesilken@gmail.com>
+Standards-Version: 3.9.2
+
+Package: nbddapigen
+Depends: php-cli
+Architecture: all
+Description: API generator for Netbeans/NBDrupalDevel
+  The API generator allows you to generate your own set of API docs for use
+  with NBDrupalDevel from existing Drupal or Drupal module sources.
