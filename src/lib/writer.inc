@@ -19,7 +19,7 @@ function nbddapigen_writer($outdir, &$info)
         mkdir($spath, 0755, TRUE);
     }
     $fpath = $spath . DIRECTORY_SEPARATOR . $info["name"] . ".xml";
-    echo("INFO: writing $fpath");
+    echo("INFO: writing $fpath\n");
     file_put_contents($fpath, $content);
 }
 
