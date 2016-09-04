@@ -4,15 +4,13 @@
     <external><?= $ext_url . $api_info["fn_name"] ?></external>
     <group><?= explode(":", $api_info["section"])[0] ?></group>
     <template><![CDATA[
-        /**
-        * Implements <?= $api_info["fn_name"] ?>();
-        */
-        function ${file_name}_<?= substr($api_info["fn_signature"], strpos($api_info["fn_signature"], "_") + 1) ?>
-        {
-           ${cursor}
-        }
-        ]]>
-    </template>
+/**
+ * Implements <?= $api_info["fn_name"] ?>();
+ */
+function ${file_name}_<?= substr($api_info["fn_signature"], strpos($api_info["fn_signature"], "_") + 1) ?> {
+    ${cursor}
+}
+]]></template>
     <help><![CDATA[
         <h2><?= $api_info["fn_signature_esc"] ?></h2>
         <p><?= $api_info["doc_short"] ?></p>
