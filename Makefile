@@ -21,7 +21,8 @@ version = $(shell cat ./VERSION)
 .phony: help clean \
 	    build  build-init build-clean build-source \
 	    build-vendor build-vendor-grammar-parser \
-	    dist dist-clean dist-init dist-build-source
+	    dist dist-clean dist-init dist-build-source \
+	    dist-dpkg dist-rpm
 
 
 help:
@@ -29,7 +30,8 @@ help:
 	@echo "  clean       - cleans all build and test build artifacts"
 	@echo "  build       - builds the sources ready for test or distribution"
 	@echo "  build-clean - cleans the source build"
-	@echo "  dist        - builds the sources ready for distribution"
+	@echo "  dist        - builds the sources and packages ready for distribution"
+	@echo "  dist-test   - builds the sources ready for adhoc testing"
 	@echo "  dist-clean  - cleans the distribution build"
 
 
@@ -72,7 +74,10 @@ build-clean:
 	rm -Rf $(build_dir)
 
 
-dist: $(src_build_dir) dist-init dist-build-source
+dist: $(src_build_dir) dist-test dist-dpkg dist-rpm
+
+
+dist-test: $(src_build_dir) dist-init dist-build-source
 
 
 dist-clean:
@@ -94,12 +99,7 @@ dist-build-source:
 	cp $(src_dir)/bin/nbddapigen $(dist_build_src_dir)/$(DIST_TARGET)/bin/
 
 
-dist-targz:
-	cd $(dist_build_src_dir) && \
-	  tar czf ../nbddapigen_$(version).tar.gz *
-
-
-dist-dpkg: dist
+dist-dpkg:
 	cp -a $(src_dir)/debian $(dist_build_dir)/
 	cp CHANGELOG $(dist_build_dir)/debian/changelog
 	cp LICENSE $(dist_build_dir)/debian/copyright
@@ -107,6 +107,5 @@ dist-dpkg: dist
 	mv ./nbddapigen* $(dist_build_dir)/
 
 
-dist-rpm: dist-dpkg
-	cd $(dist_build_dir) && sudo alien -k -r nbddapigen_$(version)_all.deb
-
+dist-rpm:
+	cd $(dist_build_dir) && fakeroot alien -k -r nbddapigen_$(version)_all.deb
