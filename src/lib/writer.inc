@@ -17,14 +17,17 @@
  * limitations under the License.
  */
 
-function nbddapigen_writer($outdir, &$api_info) {
+function nbddapigen_writer($outdir, $exturl, $drupal, &$api_info)
+{
     ob_start();
     include("templates/apidoc.xml");
     $content = ob_get_contents();
     ob_end_clean();
 
-    $spath = $outdir . DIRECTORY_SEPARATOR . str_replace(":", DIRECTORY_SEPARATOR, $api_info["section"]);
-    if (!file_exists($spath)) {
+    $spath = $outdir . DIRECTORY_SEPARATOR . $drupal . DIRECTORY_SEPARATOR
+            . str_replace(":", DIRECTORY_SEPARATOR, $api_info["section"]);
+    if (!file_exists($spath))
+    {
         mkdir($spath, 0755, TRUE);
     }
     $fpath = $spath . DIRECTORY_SEPARATOR . $api_info["name"] . ".xml";

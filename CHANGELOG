@@ -1,8 +1,15 @@
 nbddapigen (0.0.2) unstable; urgency=low
 
-  * Initial release
+  * Minor fixes and refactorings
+   - bug/typo in generator
+   - issues with Makefile
+   - move _prepare_api_info to generator
+   - typo in default outdir
+  * Support for external urls and drupal versions
+   - now requires -d,--drupal version
+   - -x,--exturl defaults to http://api.drupal.org/api/search
 
- -- Carsten Klein <trancesilken@gmail.com>  Sun, 04 Sep 2016 20:00:00 +0200
+ -- Carsten Klein <trancesilken@gmail.com>  Sun, 04 Sep 2016 21:00:00 +0200
 
 
 nbddapigen (0.0.1) unstable; urgency=low
@@ -10,4 +17,3 @@ nbddapigen (0.0.1) unstable; urgency=low
   * Initial release
 
  -- Carsten Klein <trancesilken@gmail.com>  Fri, 02 Sep 2016 21:00:00 +0200
-

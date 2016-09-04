@@ -1,4 +1,5 @@
 <?php
+
 // vim: expandtab:ts=4:sw=4
 /*
  * Copyright 2016 Coldrye
@@ -12,7 +13,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and 
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
@@ -22,7 +23,6 @@ require("vendor/grammar_parser/parser.inc");
 require("vendor/grammar_parser/reader.inc");
 require("vendor/grammar_parser/writer.inc");
 require("vendor/grammar_parser/editor.inc");
-
 
 /**
  * Parses the specified source and returns an array of api info data structures.
@@ -51,10 +51,6 @@ require("vendor/grammar_parser/editor.inc");
 function nbddapigen_parser($source, $subsection)
 {
     $result = array();
-    $editor = NULL;
-    $reader = NULL;
-    $nodes = NULL;
-    $current = NULL;
 
     $editor = PGPEditor::getInstance();
     $reader = $editor->getReader();
@@ -63,12 +59,12 @@ function nbddapigen_parser($source, $subsection)
     $reader->setSnippet($source);
     $reader->buildGrammar();
 
-    $nodes = $reader->getStatements();
+    $nodes   = $reader->getStatements();
     $current = $nodes->first();
-    while($current != NULL)
+    while ($current != NULL)
     {
         $statement = $current->data;
-        $type = is_object($statement) ? $statement->type : $statement["type"];
+        $type      = is_object($statement) ? $statement->type : $statement["type"];
         if ($type === T_FUNCTION)
         {
             $api_info = _parse_api_info($editor, $statement, $subsection);
@@ -83,18 +79,16 @@ function nbddapigen_parser($source, $subsection)
     return $result;
 }
 
-
 function _parse_api_info(&$editor, &$statement, $subsection)
 {
     $result = NULL;
 
-    $section = NULL;
-
-    $RE_HOOK = "/^hook_(.+)$/";
-    $RE_THEME = "/^template_preprocess_(.+)$/";
-    $SECTION_API = "hooks";
+    $RE_HOOK       = "/^hook_(.+)$/";
+    $RE_THEME      = "/^template_preprocess_(.+)$/";
+    $SECTION_API   = "hooks";
     $SECTION_THEME = "themes";
 
+    $section = NULL;
     $fn_name = $editor->statementOperandToText($statement);
     $matches = array();
     if (preg_match($RE_HOOK, $fn_name, $matches))
@@ -108,49 +102,46 @@ function _parse_api_info(&$editor, &$statement, $subsection)
 
     if ($section)
     {
-        $name = $matches[1];
+        $name         = $matches[1];
         $fn_signature = $editor->functionGetSignature($statement);
-        $comment = $editor->commentToString($statement->comment);
+        $comment      = $editor->commentToString($statement->comment);
         if (strlen($comment) > 0)
         {
-            $lines = explode("\n", $comment);
+            $lines     = explode("\n", $comment);
             $doc_short = _parse_comment($lines, $offset, TRUE);
-            $doc_long = _parse_comment($lines, $offset);
+            $doc_long  = _parse_comment($lines, $offset);
             $doc_param = _parse_annotations($lines, $offset);
         }
         $result = _create_new_api_info(
-            $section . ":" . $subsection, $name, $fn_name, $fn_signature,
-            $doc_short, $doc_long, $doc_param
+                $section . ":" . $subsection, $name, $fn_name, $fn_signature,
+                $doc_short, $doc_long, $doc_param
         );
     }
 
     return $result;
 }
 
-
 function _create_new_api_info(
-    $section, $name, $fn_name, $fn_signature,
-    $doc_short, $doc_long, $doc_param
+$section, $name, $fn_name, $fn_signature, $doc_short, $doc_long, $doc_param
 )
 {
     return array(
-        "section" => $section,
-        "name" => $name,
-        "fn_name" => $fn_name,
+        "section"      => $section,
+        "name"         => $name,
+        "fn_name"      => $fn_name,
         "fn_signature" => $fn_signature,
-        "doc_short" => $doc_short,
-        "doc_long" => $doc_long,
-        "doc_param" => $doc_param
+        "doc_short"    => $doc_short,
+        "doc_long"     => $doc_long,
+        "doc_param"    => $doc_param
     );
 }
-
 
 function _parse_comment(&$lines, &$offset, $single = FALSE)
 {
     $tmp = [];
 
     $count = count($lines);
-    while($offset < $count)
+    while ($offset < $count)
     {
         $offset++;
         if ($offset == $count)
@@ -191,13 +182,12 @@ function _parse_comment(&$lines, &$offset, $single = FALSE)
     return trim(implode("\n", $tmp));
 }
 
-
 function _parse_annotations(&$lines, &$offset)
 {
     $result = [];
 
     $count = count($lines);
-    while($offset < $count)
+    while ($offset < $count)
     {
         $offset++;
         if ($offset == $count)
@@ -209,7 +199,7 @@ function _parse_annotations(&$lines, &$offset)
         if (strpos($line, "@param") === 0)
         {
             $result[] = _create_new_param_info(
-                $line, _parse_comment($lines, $offset)
+                    $line, _parse_comment($lines, $offset)
             );
         }
         else if (strpos($line, "@") === 0)
@@ -222,12 +212,11 @@ function _parse_annotations(&$lines, &$offset)
     return $result;
 }
 
-
 function _create_new_param_info($line, $comment)
 {
     $parts = explode(" ", substr($line, strlen("@param ")));
-    $type = "";
-    $name = $parts[0];
+    $type  = "";
+    $name  = $parts[0];
     if (count($parts) > 1)
     {
         $type = $parts[0];
@@ -235,9 +224,8 @@ function _create_new_param_info($line, $comment)
     }
 
     return array(
-        "type" => $type,
-        "name" => $name,
+        "type"    => $type,
+        "name"    => $name,
         "comment" => $comment
     );
 }
-

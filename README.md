@@ -26,8 +26,9 @@ There are multiple paths here:
 
 ## Usage
 
-```
-> nbddapigen <drupal-root>
-> mv ./nbddapigenout ~/.netbeans/<version>/DrupalDevel/code/<drupal-version>
-```
+When generating the documentation for a new Drupal release, you simply use
 
+```
+> nbddapigen -d <version> <drupal-root>
+> mv ./nbddapigenout/<version> ~/.netbeans/<version>/DrupalDevel/code/
+```

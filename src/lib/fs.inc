@@ -1,4 +1,5 @@
 <?php
+
 // vim: expandtab:ts=4:sw=4
 /*
  * Copyright 2016 Coldrye
@@ -12,20 +13,20 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and 
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
 function scan_paths(&$scanpaths, &$extensions)
 {
-    $result = array();
+    $result  = array();
     $visited = array();
 
-    $cwd = getcwd();
+    $cwd   = getcwd();
     $paths = $scanpaths;
-    while(count($paths) > 0)
+    while (count($paths) > 0)
     {
-        $opath = $path = array_pop($paths);
+        $opath = $path  = array_pop($paths);
         if (strpos($opath, ".") === 0)
         {
             $path = realpath($cwd . DIRECTORY_SEPARATOR . $opath);
@@ -55,7 +56,7 @@ function scan_paths(&$scanpaths, &$extensions)
                 continue;
             }
 
-            while(count($contents) > 0)
+            while (count($contents) > 0)
             {
                 $fpath = array_pop($contents);
 
@@ -64,7 +65,7 @@ function scan_paths(&$scanpaths, &$extensions)
                 {
                     continue;
                 }
-                $opath = $path . DIRECTORY_SEPARATOR . $fpath;
+                $opath   = $path . DIRECTORY_SEPARATOR . $fpath;
                 $abspath = _dereference_link(realpath($opath));
                 if (!$abspath)
                 {
@@ -90,7 +91,7 @@ function scan_paths(&$scanpaths, &$extensions)
             $candidates[] = $path;
         }
 
-        foreach($candidates as $candidate)
+        foreach ($candidates as $candidate)
         {
             if (_is_valid_candidate($candidate, $extensions))
             {
@@ -104,12 +105,11 @@ function scan_paths(&$scanpaths, &$extensions)
     return $result;
 }
 
-
 function _dereference_link($path)
 {
     $result = $path;
 
-    while(is_link($result))
+    while (is_link($result))
     {
         $target = readlink($result);
         if (strpos($target, ".") === 0)
@@ -127,7 +127,6 @@ function _dereference_link($path)
     return $result;
 }
 
-
 function _is_valid_candidate($path, &$extensions)
 {
     $result = FALSE;
@@ -135,7 +134,7 @@ function _is_valid_candidate($path, &$extensions)
     // skip all tests
     if (strpos($path, "_test") === FALSE)
     {
-        foreach($extensions as $extension)
+        foreach ($extensions as $extension)
         {
             $pos = strrpos($path, $extension);
             if ($pos !== FALSE && $pos == strlen($path) - strlen($extension))
@@ -148,4 +147,3 @@ function _is_valid_candidate($path, &$extensions)
 
     return $result;
 }
-
