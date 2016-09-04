@@ -3,3 +3,4 @@ dist
 .*.swp
 *.bak
 /nbproject/private/
+nbddapigenout
