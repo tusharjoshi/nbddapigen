@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
     <title><?= $api_info["name"] ?></title>
-    <external><?= $ext_url . $api_info["fn_name"] ?></external>
+    <external><?= $exturl . "/" . $drupal . "/" . $api_info["fn_name"] ?></external>
     <group><?= explode(":", $api_info["section"])[0] ?></group>
     <template><![CDATA[
 /**
